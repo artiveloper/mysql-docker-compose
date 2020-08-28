@@ -1,0 +1,23 @@
+version: '3.7'
+
+volumes:
+  nodebird-db-volume: {}
+
+services:
+  nodebird-db:
+    container_name: nodebird-db
+    build:
+      context: ./nodebird-db/
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - nodebird-db-volume:/var/lib/mysql
+      - ./nodebird-db/config:/docker-entrypoint-initdb.d/:ro
+      - ./nodebird-db/config:/etc/mysql/conf.d
+    ports:
+      - "3306:3306"
+    networks:
+      - nodebird
+
+networks:
+  nodebird:
+
